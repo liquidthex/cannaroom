@@ -258,7 +258,7 @@ function addTokeCount() {
   mysql_query("INSERT INTO tokeStats (name, count, lastToke) VALUES ('" . addslashes($toker['name']) . "', '1', '" . $date . "') ON DUPLICATE KEY UPDATE count=count+1,lastToke='" . $date . "'");
  }
  $tokerString = json_encode($tokers);
- mysql_query("INSERT INTO tokeList (id, date, tokers) VALUES ('', '" . $date . "', '" . addslashes($tokerString) . "')");
+ mysql_query("INSERT INTO tokeList (id, date, tokerCount, tokers) VALUES ('', '" . $date . "', '" . count($tokers) . "', '" . addslashes($tokerString) . "')");
 }
 
 function ajax_loop() {
