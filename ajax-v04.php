@@ -29,7 +29,6 @@ function getBanner() {
   'banner_inTheLead',
   'banner_tokesLastWeek',
   'banner_randomQuote',
-  'banner_tokesLastHr',
   'banner_tokersToday'
  );
 
@@ -54,8 +53,8 @@ function getBanner() {
 function banner_tokersToday() {
  $tokers = tokersInLast();
  
- if (count($tokers) <= 0) return "Nobody has toked today :(";
- return count($tokers) . " stoners got high here today.";
+ if (count($tokers) <= 0) return "Nobody has shared a toke today :(";
+ return count($tokers) . " stoners got high together here today.";
 }
 
 function banner_inTheLead() {
@@ -71,20 +70,20 @@ function ajax_tokersThisWeek() {
 
  $tokers = tokersInLast(60*60*24*7);
 
- return count($tokers) . " stoners got high here this week.";
+ return count($tokers) . " stoners got high together here this week.";
 }
 
 function banner_tokesToday() {
  global $state;
- return $state['tokesInLast'] . " tokes today";
+ return $state['tokesInLast'] . " group tokes today";
 }
 
 function banner_tokesLast24() {
- return tokesInLast(60*60*24) . " tokes over last 24 hours";
+ return tokesInLast(60*60*24) . " shared tokes over last 24 hours";
 }
 
 function banner_tokesLastWeek() {
- return tokesInLast(60*60*24*7) . " tokes over last 7 days";
+ return tokesInLast(60*60*24*7) . " shared tokes over last 7 days";
 }
 
 function banner_tokesLastHr() {
@@ -95,7 +94,8 @@ function banner_randomQuote() {
  $perQuote = 60*60;
  $quotes = array(
   'Stay calm, get high.',
-  'Have you toked enough, today?'
+  'Have you toked enough, today?',
+  'Brought to you by your friend, Mr. Cannabis'
  );
 
  $now = time();
@@ -127,7 +127,6 @@ function banner_timeTo420() {
 function findActiveToke($optokeOnly = false) {
  global $tokeDelay;
  $now = time();
- check420toke();
  $sixtyago = $now - ($tokeDelay + 15);
  if ($optokeOnly) $addStr = " AND optoke='1'";
  $toke = mysql_fetch_assoc(mysql_query("SELECT * FROM tokes WHERE date >= $sixtyago".$addStr." ORDER BY date ASC LIMIT 1"));
@@ -137,7 +136,6 @@ function findActiveToke($optokeOnly = false) {
 
 function findActiveTokers() {
  global $tokeDelay;
- check420toke();
  $sixtyago = time() - ($tokeDelay + 15);
  $tokeQuery = mysql_query("SELECT * FROM tokes WHERE date >= $sixtyago ORDER BY date ASC");
  $tokers = array();
@@ -151,7 +149,6 @@ function findActiveTokers() {
  return $toking;
 }
 
-function check420toke() { }
 
 function getActiveToke() {
  global $state,$tokeDelay;
@@ -192,12 +189,6 @@ function randomName() {
  return "RandomToker-" . substr(md5($key), 0, 4);
 }
 
-function ajax_420toke() {
- $now = time();
- $data = array('420toke'=>true);
- mysql_query("TRUNCATE TABLE tokes");
- mysql_query("INSERT INTO tokes (id,date,name,optoke,data) VALUES ('', '" . $now . "', '', '1', '" . addslashes($data) . "')");
-}
 
 function ajax_toke() {
  $now = time();
@@ -222,7 +213,7 @@ function tokesInLast($last = null) {
  if (!$ago) $ago = strtotime("0:00",time()); 
 
  $count = 0;
- $result = mysql_query("SELECT COUNT(*) as count FROM tokeList WHERE date >= $ago");
+ $result = mysql_query("SELECT COUNT(*) as count FROM tokeList WHERE date >= $ago AND tokerCount>1");
  $data = mysql_fetch_assoc($result);
  if ($data) $count = $data['count'];
 
@@ -235,7 +226,7 @@ function tokersInLast($last = null) {
  if ($last) $ago = time() - $last;
  if (!$ago) $ago = strtotime("0:00",time()); 
 
- $result = mysql_query("SELECT tokers FROM tokeList WHERE date >= $ago");
+ $result = mysql_query("SELECT tokers FROM tokeList WHERE date >= $ago AND tokerCount>1");
  $tokers = array();
  while ($tokeData = mysql_fetch_assoc($result)) {
   $tokerList = json_decode($tokeData['tokers']);
