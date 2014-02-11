@@ -49,7 +49,6 @@ function getBanner() {
   $state['banner'] = "Happy " . date('g') . ":20!";
  else
   $state['banner'] = call_user_func($banners[$key]);
-
 }
 
 function banner_tokersToday() {
