@@ -64,7 +64,7 @@ function banner_inTheLead() {
 
  if (count($tokers) <= 0) return "Nobody has toked today :(";
  foreach ($tokers as $toker => $tokes) { break; }
- return $toker . " is the most prolific stoner today, he's toked " . $tokes . " times!";
+ return $toker . " is the most prolific stoner today with " . $tokes . " tokes!";
 }
 
 function ajax_tokersThisWeek() {
