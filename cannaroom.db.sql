@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 12, 2014 at 08:21 AM
+-- Generation Time: Feb 12, 2014 at 08:34 AM
 -- Server version: 5.5.35
 -- PHP Version: 5.3.10-1ubuntu3.9
 
@@ -23,6 +23,19 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tokeEvents`
+--
+
+CREATE TABLE IF NOT EXISTS `tokeEvents` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `event` tinytext NOT NULL,
+  `expire` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tokeList`
 --
 
@@ -32,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `tokeList` (
   `tokerCount` int(11) NOT NULL,
   `tokers` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1257 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1259 ;
 
 -- --------------------------------------------------------
 
@@ -47,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `tokes` (
   `optoke` tinyint(4) NOT NULL,
   `data` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
