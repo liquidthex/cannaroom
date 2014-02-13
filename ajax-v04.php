@@ -35,7 +35,30 @@ if ($op == 'getControlPanel') {
 }
 
 function controlPanelPage() {
- echo "Hi I'm your control panel rawrr";
+ global $admin;
+ if ($admin) {
+  echo "<div style=\"font-size: 10px;\">Add banner message</div>";
+  echo "<input type=text id=bannermsg size=26>";
+  echo "<br>";
+  echo "<span style=\"font-size: 16px;\">Duration:</span> <select id=bannerduration>";
+  echo "<option>1m</option>";
+  echo "<option>10m</option>";
+  echo "<option>30m</option>";
+  echo "<option>1h</option>";
+  echo "<option>2h</option>";
+  echo "<option>3h</option>";
+  echo "<option>6h</option>";
+  echo "<option>9h</option>";
+  echo "<option>12h</option>";
+  echo "<option>24h</option>";
+  echo "<option>EOD</option>";
+  echo "</select>";
+  echo "<span style=\"font-size: 16px;\">Persistant:</span> <input type=checkbox id=bannerpersistant title=\"Selecting this means the banner will be the ONLY one shown.\"><br>";
+  echo "<a href=\"#\">Add</a>";
+ } else {
+  echo "Not an admin, sorry.";
+ }
+ 
 }
 
 function getTokeEvents() {
