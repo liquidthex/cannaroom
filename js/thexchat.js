@@ -18,8 +18,14 @@ var tokesInLast = 0;
 var debug = false;
 var banner = 'Loading...';
 var nextLoop = 7000;
+var cpLoaded = false;
 
 function thexInit(aUrl) {
+ $('#controlPanelDialog').dialog({
+  autoOpen: false,
+  show: { effect: "blind", duration: 800 },
+  hide: { effect: "explode", duration: 1000 }
+ });
  if (aUrl) ajaxUrl = aUrl;
  $('#chatbox').height($(window).height()-64);
  ajaxLoop('init');
@@ -27,6 +33,15 @@ function thexInit(aUrl) {
  log("=================================================================");
  log("===========  ThexChat Engine ("+ajaxUrl+") =====================");
  log("=================================================================");
+}
+
+function controlPanel() {
+ $('#controlPanelDialog').dialog("open");
+ if (!cpLoaded) {
+  $('#controlPanelDialog').load(ajaxUrl + '?params=getControlPanel', function() {
+   cpLoaded = true;
+  });
+ }
 }
 
 function log(msg) {

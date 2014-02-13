@@ -1,22 +1,55 @@
 <?
+error_reporting(0);
 
+$admins = array(1);
+
+global $state,$tokeDelay,$admin;
+$tokeDelay = 60;
+
+session_start();
+require_once "./handlers/module/cms.config.handler.php";
+require_once "./handlers/module/db.class.php";
+require_once "./handlers/module/utils.class.php";
+Db::dbConnect();
+$uid = Utils::myUID();
 require_once("mysql.inc.php");
 require_once("timestr.php");
-
-global $state,$tokeDelay;
-$tokeDelay = 60;
 
 $op = $_GET['params'];
 if (!$op) $op = 'loop';
 
+if ($uid && in_array($uid, $admins)) $admin = true; else $admin = false;
+
 $state['tokesInLast'] = tokesInLast();
 getBanner();
+getTokeEvents();
 
 if (function_exists('ajax_' . $op) && ($op != 'loop')) call_user_func('ajax_'.$op);
 
 ajax_loop();
 
-echo out();
+if ($op == 'getControlPanel') {
+ controlPanelPage();
+} else {
+ echo out();
+}
+
+function controlPanelPage() {
+ echo "Hi I'm your control panel rawrr";
+}
+
+function getTokeEvents() {
+ global $state;
+ $result = mysql_query("SELECT * FROM tokeEvents WHERE expire>".time());
+ $tokeEvents = array();
+ while ($tokeEventData = mysql_fetch_assoc($result)) {
+  $tokeEvents[$tokeEventData['id']] = array_merge($tokeEventData,json_decode($tokeEventData['event']));
+ }
+
+ foreach ($tokeEvents as $tokeEvent) {
+  print_r($tokeEvent);
+ }
+}
 
 function getBanner() {
  global $state;
